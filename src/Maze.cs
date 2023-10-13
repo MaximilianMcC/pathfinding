@@ -3,21 +3,28 @@ using SFML.System;
 
 class Maze
 {
+	public bool[] MazeData;
+	public int Width;
+	public int Height; //! height might not be needed (remove)
+	public uint BlockSize;
+
 	private Sprite sprite;
 
-	public Maze(uint width, uint height, int? seed)
+	public Maze(int width, int height, int? seed)
 	{
 		// Store map data in bool array
 		// TODO: Make this private property
-		bool[] mazeData = new bool[width * height];
+		MazeData = new bool[width * height];
+		Width = width;
+		Height = height;
 
 		// Make new random with the provided seed if one was given
 		Random random = seed == null ? new Random() : new Random((int)seed);
 
 		// Get texture ready for drawing
-		uint blockSize = App.Window.Size.X / width;
-		RenderTexture texture = new RenderTexture(width * blockSize, height * blockSize);
-		RectangleShape block = new RectangleShape(new Vector2f(blockSize, blockSize));
+		BlockSize = App.Window.Size.X / (uint)width;
+		RenderTexture texture = new RenderTexture((uint)width * BlockSize, (uint)height * BlockSize);
+		RectangleShape block = new RectangleShape(new Vector2f(BlockSize, BlockSize));
 
 		// Generate the maze data
 		// TODO: Generate a proper maze. Not this random garbage
@@ -33,10 +40,10 @@ class Maze
 				if (probability <= 0.5)
 				{
 					// Add a new block at the current position
-					mazeData[index] = true;
+					MazeData[index] = true;
 
 					// Add a block to the texture
-					block.Position = new Vector2f(x * blockSize, y * blockSize);
+					block.Position = new Vector2f(x * BlockSize, y * BlockSize);
 					texture.Draw(block);
 				}
 

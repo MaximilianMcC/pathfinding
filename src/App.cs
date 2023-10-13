@@ -1,4 +1,5 @@
 using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 
 class App
@@ -6,6 +7,7 @@ class App
 	public static RenderWindow Window;
 
 	private Maze maze;
+	private Path path;
 
 	public void Run()
 	{
@@ -15,7 +17,8 @@ class App
 		Window.Closed += (sender, e) => Window.Close();
 
 
-		maze = new Maze(50, 50, null);
+		maze = new Maze(50, 50, 123);
+		path = new Path(maze, new Vector2i(9, 7), new Vector2i(21, 20));
 
 
 		// Main game loop
@@ -41,9 +44,10 @@ class App
 	private void Render()
 	{
 		// Clear the window
-		Window.Clear(new Color(0xff00ffff));
+		Window.Clear(new Color(0x0));
 
 		maze.Render();
+		path.Draw();
 
 		// Draw the new frame
 		Window.Display();
